@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    
+    <TextView android:id="@+id/tv_dialog_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/aice_Normal_dim"
+        android:text="标题"/>
+    
+    <!-- <View android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:contentDescription="@null"
+            android:background="@drawable/aice_divider"/> -->
+    
+    <TextView android:id="@+id/tv_dialog_message"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/aice_Normal_dim"
+        android:gravity="center_horizontal"
+        android:text="对话框显示内容"/>
+    
+    <View android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:contentDescription="@null"
+            android:background="@drawable/aice_divider"/>
+    
+    
+    <LinearLayout android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+        
+        <Button android:id="@+id/btn_dialog_left"
+            android:layout_width="0dip"
+            android:layout_height="45dip"
+            android:layout_weight="1.0"
+            android:background="@drawable/aice_dialog_button_selector"
+            android:adjustViewBounds="true"
+            android:text="@string/ms_cancel"/>
+        
+        <View android:id="@+id/v_btn_divider"
+            android:layout_width="1dp"
+            android:layout_height="45dip"
+            android:contentDescription="@null"
+            android:background="@drawable/aice_divider"/>
+        
+        <Button android:id="@+id/btn_dialog_right"
+            android:layout_width="0dip"
+            android:layout_height="45dip"
+            android:layout_weight="1.0"
+            android:background="@drawable/aice_dialog_button_selector"
+            android:adjustViewBounds="true"
+            android:text="@string/ms_ok"/>
+        
+    </LinearLayout>
+    
+
+</LinearLayout>

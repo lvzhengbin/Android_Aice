@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:layout_gravity="center_horizontal"
+    android:paddingTop="5dp"
+    android:paddingBottom="10dp">
+    
+    <LinearLayout android:id="@+id/ll_pull_to_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+        
+        <TextView android:id="@+id/tv_pull_to_refresh"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="5dp" 
+             android:gravity="center"
+             android:text="@string/ms_pull_to_refresh"/>
+    
+        <TextView android:id="@+id/tv_refresh_updated_at"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:textSize="@dimen/aice_TextSizeXXSmall"
+             android:gravity="center"
+             android:text="@string/ms_refresh_updated_at"/>
+        
+    </LinearLayout>
+    
+    <!-- 下拉刷新的那个箭头 -->
+   <ImageView android:id="@+id/iv_pull_to_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_toLeftOf="@id/ll_pull_to_refresh"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        
+        android:contentDescription="@null"
+        android:src="@drawable/pulltorefresh_down_arrow"/>  
+       <!-- android:baseline="@id/ll_pull_to_refresh" -->
+       
+</RelativeLayout>

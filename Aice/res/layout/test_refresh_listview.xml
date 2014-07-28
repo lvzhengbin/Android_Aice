@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_home_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+    
+    <com.ice.android.common.view.PullToRefreshListView 
+        android:id="@+id/weibolist"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fastScrollEnabled="true" />
+    <!-- android:fastScrollEnabled="true" 设置快速滚动属性 -->    
+    
+    <!-- <ListView android:id="@+id/weibolist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fastScrollEnabled="true"/> -->
+    
+</LinearLayout>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 间距 -->
+    <dimen name="aice_Small_dim">5dip</dimen>
+    <dimen name="aice_Normal_dim">10dip</dimen>
+    <dimen name="aice_Large_dim">20dip</dimen>
+    
+    <!-- 字体大小 -->
+    <dimen name="aice_TextSizeXXSmall">10sp</dimen>
+    <dimen name="aice_TextSizeXSmall">12sp</dimen>
+    <dimen name="aice_TextSizeSmall">14sp</dimen>
+    <dimen name="aice_TextSizeMedium">16sp</dimen>
+    <dimen name="aice_TextSizeLarger">18sp</dimen>
+    <dimen name="aice_TextSizeXLarger">20sp</dimen>
+    
+    
+</resources>

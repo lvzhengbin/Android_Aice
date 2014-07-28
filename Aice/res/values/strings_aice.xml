@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ms_loading">正在加载...</string>
+    <string name="ms_ok">确认</string>
+    <string name="ms_cancel">取消</string>
+    <string name="ms_pull_to_refresh">下拉可以刷新</string>
+    <string name="ms_release_to_refresh">松开即可刷新</string>
+    <string name="ms_refresh_loading">正在加载...</string>
+    <string name="ms_refresh_updated_at">最近更新：2014-6-29 下午21:45:57</string>
+    <string name="ms_load_more">点击加载更多</string>
+    <string name="ms_load_complete">已加载全部</string>
+    
+    
+    
+    <!-- barcode -->
+    <string name="msBarCodeNote">正在扫描，请将手机摄像头对准二维码</string>
+    <string name="msBarCodeError">二维码扫描异常！</string>
+    <string name="msBarCodeResult">二维码扫描结果：%s。</string>
+    <string name="msBarCodeDialogNote">产品二维码无效，是否重新扫描？</string>
+    <string name="msBarCodeReturnFirst">返回首页</string>
+    <string name="msBarCodeReScan">重新扫描</string>
+    <string name="msBarCodeBuy">购物</string>
+    <string name="msGoOnBuy">继续购物</string>
+    <string name="msBarcodePosError">查找该二维码失败！</string>
+    <string name="msGoOnScan">继续扫描</string>
+    <string name="msBarcodeShopping">二维码购物</string>
+    <string name="msBarcodeResult">扫描结果</string>
+    
+    
+    
+    
+</resources>

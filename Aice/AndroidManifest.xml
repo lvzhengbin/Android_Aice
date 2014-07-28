@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ice.android"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="16" />
+    
+    <!-- 网络访问权限 -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <!-- 写入SdCard卡权限  -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!-- TelephonyManager使用权限  -->
+    <uses-permission android:name="READ_PHONE_STATE" />
+
+    <application android:name=".IceApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" 
+        android:debuggable="true">
+        <activity
+            android:name="com.ice.android.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <!-- 测试Activity -->
+        <activity 
+            android:name="com.ice.demo.ui.RefreshListViewActivity">
+        </activity>
+        
+        <!-- 测试DB模块Activity -->
+        <activity 
+            android:name="com.ice.demo.ui.DbTestActivity">
+        </activity>
+        
+        
+        
+        
+        <!-- 全局网络状态监听广播接收器 -->
+        <receiver android:name="com.ice.android.common.net.NetWorkStateReceiver">
+            <intent-filter >
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+        
+    </application>
+    
+
+</manifest>
