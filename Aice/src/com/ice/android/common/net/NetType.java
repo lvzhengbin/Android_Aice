@@ -6,6 +6,6 @@ package com.ice.android.common.net;
  */
 public enum NetType {
 	
-	WIFI,CMNET,CMWAP,NONENET
+	WIFI,CMNET,CMWAP,NONENET;
 	
 }

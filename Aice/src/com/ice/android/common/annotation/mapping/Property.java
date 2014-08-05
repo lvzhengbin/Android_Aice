@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Date;
 
-import com.ice.android.common.utils.FieldUtil;
+import net.tsz.afinal.utils.FieldUtils;
 
 /**
  * 通过映射的表字段属性信息<br>
@@ -69,7 +69,7 @@ public class Property {
 				} else if (dataType == long.class || dataType == Long.class) {
 					set.invoke(receiver, value == null ? (Long) null: Long.parseLong(value.toString()));
 				} else if (dataType == java.util.Date.class || dataType == java.sql.Date.class) {
-					set.invoke(receiver, value == null ? (Date) null: FieldUtil.stringToDateTime(value.toString()));
+					set.invoke(receiver, value == null ? (Date) null: FieldUtils.stringToDateTime(value.toString()));
 				} else if (dataType == boolean.class || dataType == Boolean.class) {
 					set.invoke(receiver, value == null ? (Boolean) null: "1".equals(value.toString()));
 				} else {

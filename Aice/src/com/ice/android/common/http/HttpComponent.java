@@ -11,6 +11,12 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.GZIPInputStream;
 
+import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.AjaxParams;
+import net.tsz.afinal.http.HttpHandler;
+import net.tsz.afinal.http.RetryHandler;
+import net.tsz.afinal.http.SyncRequestHandler;
+
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;

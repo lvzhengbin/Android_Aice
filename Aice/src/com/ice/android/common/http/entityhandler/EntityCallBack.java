@@ -16,7 +16,7 @@
 package com.ice.android.common.http.entityhandler;
 /**
  * 我觉得更应该叫做 UICallBack
- * 因为该接口主要是回调更新带ProgressBar进度条的UI界面上  进度条的进度更新
+ * 因为该接口主要是回调更新UI进度的
  * @阅读 ice
  *
  */

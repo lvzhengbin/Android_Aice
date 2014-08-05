@@ -21,22 +21,22 @@ import com.ice.android.common.utils.AnnotationUtil;
 /**
  * 清爽的DB<br>
  * <b>实例用法:</b><br>
- * 第一步：创建/获取 AiceDb对象  这里有多种创建方式<br>
- * 如：AiceDb icedb = AiceDb.getIceDb(context);<br>
+ * 第一步：创建/获取 IceDb对象  这里有多种创建方式<br>
+ * 如：IceDb icedb = IceDb.getIceDb(context);<br>
  * 第二步：创建需要操作的实体对象<br>
  * 如：Person person = new Person("ice", 24, "男", false, true);<br>
- * 第三步：调用AiceDb类中方法  对数据库进行CURD操作<br>
+ * 第三步：调用IceDb类中方法  对数据库进行CURD操作<br>
  * 如：保存实体对象到数据库 --->  icedb.save(person)
  * 
  * @author ice
  *
  */
-public class AiceDb {
+public class IceDb {
 
 	private static final String TAG = "IceDb";
 	
-	//private static HashMap<String, AiceDb> daoMap = new HashMap<String, AiceDb>();
-	private static AiceDb iceDb;
+	//private static HashMap<String, IceDb> daoMap = new HashMap<String, IceDb>();
+	private static IceDb iceDb;
 	private static DBConfig config;
 	private static SqliteDbHelper dbHelper;
 	private static final String RW = "rw";
@@ -44,7 +44,7 @@ public class AiceDb {
 	private static final String DESC = "DESC";
 	
 	
-	private AiceDb(DBConfig config){
+	private IceDb(DBConfig config){
 		dbHelper = new SqliteDbHelper(config.getContext(), 
 				       config.getDbName(), 
 				       config.getDbVersion(), 
@@ -54,9 +54,9 @@ public class AiceDb {
 	}
 	
 	
-	private synchronized static AiceDb getInstance(DBConfig config){
+	private synchronized static IceDb getInstance(DBConfig config){
 		if(iceDb == null){
-			iceDb = new AiceDb(config);
+			iceDb = new IceDb(config);
 		}
 		return iceDb;
 	}
@@ -68,7 +68,7 @@ public class AiceDb {
 	 * @param context
 	 * @return
 	 */
-	public static AiceDb getIceDb(Context context){
+	public static IceDb getIceDb(Context context){
 		DBConfig config = new DBConfig();
 		config.setContext(context);
 		return getIceDb(config);
@@ -81,7 +81,7 @@ public class AiceDb {
 	 * @param isLogSql  是否启用log模式来控制sql语句的打印  true:打印sql语句 | false：不打印sql语句
 	 * @return
 	 */
-	public static AiceDb getIceDb(Context context,boolean isLogSql){
+	public static IceDb getIceDb(Context context,boolean isLogSql){
 		DBConfig config = new DBConfig();
 		config.setContext(context);
 		config.setDebug(isLogSql);
@@ -96,7 +96,7 @@ public class AiceDb {
 	 * @param isLogSql 是否启用log模式来控制sql语句的打印  true:打印sql语句 | false：不打印sql语句
 	 * @return
 	 */
-	public static AiceDb getIceDb(Context context,String dbName,boolean isLogSql){
+	public static IceDb getIceDb(Context context,String dbName,boolean isLogSql){
 		DBConfig config = new DBConfig();
 		config.setContext(context);
 		config.setDbName(dbName);
@@ -114,7 +114,7 @@ public class AiceDb {
 	 * @param isLogSql  是否启用log模式来控制sql语句的打印  true:打印sql语句 | false：不打印sql语句
 	 * @return
 	 */
-	public static AiceDb getIceDb(Context context,String dbName,int dbVersion,DbUpdateListener dbUpdateListener,boolean isLogSql){
+	public static IceDb getIceDb(Context context,String dbName,int dbVersion,DbUpdateListener dbUpdateListener,boolean isLogSql){
 		DBConfig config = new DBConfig();
 		config.setContext(context);
 		config.setDbName(dbName);
@@ -130,7 +130,7 @@ public class AiceDb {
 	 * @param config  数据库配置对象
 	 * @return
 	 */
-	public static AiceDb getIceDb(DBConfig config){
+	public static IceDb getIceDb(DBConfig config){
 		return getInstance(config);
 	}
 	

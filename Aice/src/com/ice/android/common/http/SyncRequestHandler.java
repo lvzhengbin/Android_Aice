@@ -18,18 +18,14 @@ package com.ice.android.common.http;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import net.tsz.afinal.http.entityhandler.StringEntityHandler;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.protocol.HttpContext;
 
-import com.ice.android.common.http.entityhandler.StringEntityHandler;
-/**
- * 同步请求 Handler类
- * @author ice
- *
- */
 public class SyncRequestHandler {
 
 	private final AbstractHttpClient client;
@@ -45,7 +41,6 @@ public class SyncRequestHandler {
 		this.charset = charset;
 	}
 
-	
 	private Object makeRequestWithRetries(HttpUriRequest request) throws IOException {
 		
 		boolean retry = true;
@@ -75,9 +70,9 @@ public class SyncRequestHandler {
 			throw cause;
 		else
 			throw new IOException("未知网络错误");
+		
 	}
 
-	
 	public Object sendRequest (HttpUriRequest... params) {
 		try {
 			return makeRequestWithRetries(params[0]);

@@ -2,9 +2,7 @@ package com.ice.android.common.utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import com.ice.android.common.annotation.Column;
 import com.ice.android.common.annotation.Key;
@@ -183,16 +181,7 @@ public class FieldUtil {
 	}
 	
 	
-	public static Date stringToDateTime(String strDate) {
-		if (strDate != null) {
-			try {
-				return SDF.parse(strDate);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
+	
 	
 	
 }
