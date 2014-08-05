@@ -1,4 +1,4 @@
-package com.ice.android.common.http;
+package com.ice.android.common.core;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,21 +45,27 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.SyncBasicHttpContext;
 
+import com.ice.android.common.http.AjaxCallBack;
+import com.ice.android.common.http.AjaxParams;
+import com.ice.android.common.http.HttpHandler;
+import com.ice.android.common.http.RetryHandler;
+import com.ice.android.common.http.SyncRequestHandler;
+
 /**
- * 网络请求组件类
- * @author ice
+ * 网络请求组件类<br>
+ * @阅读 ice
  *
  */
-public class HttpComponent {
+public class AiceHttp {
 
-    private static final int DEFAULT_SOCKET_BUFFER_SIZE = 8 * 1024; //8KB
+    private static final int DEFAULT_SOCKET_BUFFER_SIZE = 8 * 1024;  // 8KB
     private static final String HEADER_ACCEPT_ENCODING = "Accept-Encoding";
     private static final String ENCODING_GZIP = "gzip";
 
-    private static int maxConnections = 10; //http请求最大并发连接数
-    private static int socketTimeout = 10 * 1000; //超时时间，默认10秒
-    private static int maxRetries = 5;//错误尝试次数，错误异常表请在RetryHandler添加
-    private static int httpThreadCount = 3;//http线程池数量
+    private static int maxConnections = 10; // http请求最大并发连接数
+    private static int socketTimeout = 10 * 1000; // 超时时间，默认10秒
+    private static int maxRetries = 5; // 错误尝试次数，错误异常表请在RetryHandler添加
+    private static int httpThreadCount = 3; // http线程池数量
 
     private final DefaultHttpClient httpClient;
     private final HttpContext httpContext;
@@ -91,7 +97,7 @@ public class HttpComponent {
      */
     private static final Executor executor =Executors.newFixedThreadPool(httpThreadCount, sThreadFactory);
     
-    public HttpComponent() {
+    public AiceHttp() {
         BasicHttpParams httpParams = new BasicHttpParams();
 
         ConnManagerParams.setTimeout(httpParams, socketTimeout);
@@ -219,35 +225,68 @@ public class HttpComponent {
     public void addHeader(String header, String value) {
         clientHeaderMap.put(header, value);
     }
-
-    
     
 
-    //------------------get 请求-----------------------
+    //------------------http Get 请求-----------------------
+    /**
+     * Http Get请求, 只请求url
+     * @param url
+     * @param callBack
+     */
     public void get( String url, AjaxCallBack<? extends Object> callBack) {
         get( url, null, callBack);
     }
 
+    /**
+     * Http Get请求, 带url请求参数,   {url}?xx=yy,zz=oo
+     * @param url
+     * @param params  请求参数对象
+     * @param callBack
+     */
     public void get( String url, AjaxParams params, AjaxCallBack<? extends Object> callBack) {
         sendRequest(httpClient, httpContext, new HttpGet(getUrlWithQueryString(url, params)), null, callBack);
     }
     
+    /**
+     * Http Get请求, 带url请求参数, 带请求头文件信息
+     * @param url
+     * @param headers  头文件信息
+     * @param params   请求参数
+     * @param callBack
+     */
     public void get( String url, Header[] headers, AjaxParams params, AjaxCallBack<? extends Object> callBack) {
         HttpUriRequest request = new HttpGet(getUrlWithQueryString(url, params));
         if(headers != null) request.setHeaders(headers);
         sendRequest(httpClient, httpContext, request, null, callBack);
     }
     
+    /**
+     * Get的同步请求,只传url  【用处不大】
+     * @param url
+     * @return
+     */
     public Object getSync( String url) {
     	return getSync( url, null);
     }
 
+    /**
+     * Get的同步请求,带请求参数   {url}?xx=yy,zz=oo   【用处不大】
+     * @param url
+     * @param params
+     * @return
+     */
     public Object getSync( String url, AjaxParams params) {
     	 HttpUriRequest request = new HttpGet(getUrlWithQueryString(url, params));
     	return sendSyncRequest(httpClient, httpContext, request, null);
     }
     
-    
+    /**
+     * Get的同步请求,带请求参数 ,带请求头信息      【用处不大】
+     * @param url
+     * @param headers
+     * @param params
+     * @return
+     */
     public Object getSync( String url, Header[] headers, AjaxParams params) {
         HttpUriRequest request = new HttpGet(getUrlWithQueryString(url, params));
         if(headers != null) request.setHeaders(headers);
@@ -255,7 +294,7 @@ public class HttpComponent {
     }
 
 
-    //------------------post 请求-----------------------
+    //------------------http Post 请求-----------------------
     public void post(String url, AjaxCallBack<? extends Object> callBack) {
         post(url, null, callBack);
     }
@@ -371,7 +410,7 @@ public class HttpComponent {
         return sendSyncRequest(httpClient, httpContext, delete, null);
     }
     
-    //---------------------下载---------------------------------------
+    //---------------------下载网络请求----------------------
     public HttpHandler<File> download(String url,String target,AjaxCallBack<File> callback){
     	return download(url, null, target, false, callback);
     }
@@ -393,7 +432,7 @@ public class HttpComponent {
     }
 
 
-    //---------------------上传---------------------------------------
+    //---------------------上传网络请求---------------------
     // 还未编码
     
     
@@ -410,8 +449,8 @@ public class HttpComponent {
 
         new HttpHandler<T>(client, httpContext, ajaxCallBack,charset)
         .executeOnExecutor(executor, uriRequest);
-
     }
+    
     
     protected Object sendSyncRequest(DefaultHttpClient client, HttpContext httpContext, HttpUriRequest uriRequest, String contentType) {
         if(contentType != null) {
@@ -420,6 +459,7 @@ public class HttpComponent {
         return new SyncRequestHandler(client, httpContext,charset).sendRequest(uriRequest);
     }
 
+    
     public static String getUrlWithQueryString(String url, AjaxParams params) {
         if(params != null) {
             String paramString = params.getParamString();
@@ -428,6 +468,7 @@ public class HttpComponent {
         return url;
     }
 
+    
     private HttpEntity paramsToEntity(AjaxParams params) {
         HttpEntity entity = null;
 

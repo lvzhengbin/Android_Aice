@@ -19,11 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import net.tsz.afinal.core.AsyncTask;
-import net.tsz.afinal.http.entityhandler.EntityCallBack;
-import net.tsz.afinal.http.entityhandler.FileEntityHandler;
-import net.tsz.afinal.http.entityhandler.StringEntityHandler;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -32,6 +27,11 @@ import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.protocol.HttpContext;
+
+import com.ice.android.common.http.channel.AsyncTask;
+import com.ice.android.common.http.entityhandler.EntityCallBack;
+import com.ice.android.common.http.entityhandler.FileEntityHandler;
+import com.ice.android.common.http.entityhandler.StringEntityHandler;
 
 import android.os.SystemClock;
 

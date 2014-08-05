@@ -23,7 +23,7 @@ public class ImageMemCache implements ImageCache{
 	/** 存放图片的HashMap 对象 */
 	private static HashMap<String, Bitmap> mHardBitmapCache;
 	/** 使用软引用存放图片数据   放入ConcurrentHashMap对象    <这里是否使 WeakHashMap 会更好呢 ？> */
-	private static ConcurrentHashMap<String, SoftReference<Bitmap>> mSoftBitmapCache = new ConcurrentHashMap<>(CACHE_CAPACITY);
+	private static ConcurrentHashMap<String, SoftReference<Bitmap>> mSoftBitmapCache = new ConcurrentHashMap<String, SoftReference<Bitmap>>(CACHE_CAPACITY);
 	
 	public ImageMemCache(){
 		/* 这里之所以选用 LinkedHashMap，我想主要是因为第三个参数：排序模式  <true表示为访问顺序 |false表示为插入顺序 >
