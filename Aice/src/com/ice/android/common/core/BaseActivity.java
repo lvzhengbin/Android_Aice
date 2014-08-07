@@ -13,7 +13,9 @@ import android.widget.TextView;
 import com.ice.android.R;
 /**
  * 所有UI页面Activity抽象基类<br>
- * 可根据具体项目需求修改、扩展该类
+ * 可根据具体项目需求修改、扩展该类<br>
+ * <b>备注:</b><br>
+ * 已把该类移至com.ice.android.common.core包下
  * @author ice
  *
  */

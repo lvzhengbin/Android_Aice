@@ -9,11 +9,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.ice.android.common.core.BaseActivity;
+import com.ice.android.common.customview.DialogManager;
 import com.ice.android.common.net.NetChangeObserver;
 import com.ice.android.common.net.NetType;
 import com.ice.android.common.net.NetWorkStateReceiver;
-import com.ice.android.common.view.BaseActivity;
-import com.ice.android.common.view.DialogManager;
 import com.ice.demo.ui.DbTestActivity;
 import com.ice.demo.ui.RefreshListViewActivity;
 
