@@ -100,13 +100,6 @@ public class MobileConfig {
 		return mDesMetrics.widthPixels;
 	}
 	
-	/**
-	 * 返回应用版本信息
-	 * @return
-	 */
-	public String getAppVersionInfo(){
-		return mPackageInfo.versionName + mPackageInfo.versionCode;
-	}
 	
 	/**
 	 * Get the number of phone,sometimes we can't get it because of sim operator's limit.

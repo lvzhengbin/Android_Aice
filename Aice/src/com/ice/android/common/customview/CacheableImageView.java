@@ -2,7 +2,7 @@ package com.ice.android.common.customview;
 
 import com.ice.android.common.imagecache.AsynImageLoader;
 import com.ice.android.common.imagecache.ImageParams;
-import com.ice.android.common.utils.ImageUtils;
+import com.ice.android.common.utils.ImageUtil;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -83,7 +83,7 @@ public class CacheableImageView extends ImageView {
 			display(bitmap);
 		}else{
 			// 如果没有从内存缓存中获取到 则异步加载网络图片资源
-			bitmap = ImageUtils.drawableToBitmap(drawable);  // 显示缺省时图片
+			bitmap = ImageUtil.drawableToBitmap(drawable);  // 显示缺省时图片
 			display(bitmap);
 			Log.d(TAG, "showImg，从内存缓存中没有获取到图片数据，开始从网络上获取图片 url = " + imageParams.getUrl());
 			asynImageLoader.loadImageDataFromNet(imageParams, new ImgHandler(imageParams));
