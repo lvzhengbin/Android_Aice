@@ -4,9 +4,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 
-import com.ice.android.common.core.BaseActivity;
+import com.ice.android.common.core.AiceBaseActivity;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends AiceBaseActivity {
 
 	private ImageButton ibtn_edit;
 	

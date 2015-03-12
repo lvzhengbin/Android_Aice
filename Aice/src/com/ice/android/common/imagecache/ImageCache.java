@@ -11,16 +11,16 @@ public interface ImageCache {
 	
 	/**
 	 * 从缓存中拿图片
-	 * @param imageParams  图片参数实体类
+	 * @param url 图片的url
 	 * @return
 	 */
-	public Bitmap getImageData(ImageParams imageParams);
+	public Bitmap getImageData(String url);
 	
 	/**
 	 * 保存图片至缓存
-	 * @param imageParams 图片参数实体类
+	 * @param url 图片url
 	 * @param mBitmap  
 	 */
-	public void addBitmapToCache(ImageParams imageParams,Bitmap mBitmap);
+	public void addBitmapToCache(String url, Bitmap mBitmap);
 	
 }

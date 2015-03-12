@@ -3,20 +3,24 @@ package com.ice.android.common.imagecache;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Properties;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.ice.android.common.utils.LogUtil;
 import com.ice.android.common.utils.SdcardUtil;
 import com.ice.android.common.utils.encryption.MD5;
 
 /**
- * 文件缓存对象  缓存在sdcard 上
+ * 文件缓存对象  缓存在sdcard上
  * @author ice
  *
  */
@@ -24,17 +28,45 @@ public class ImageFileCache implements ImageCache{
 
 	private static final String TAG = "ImageFileCache";
 	
-	/** 文件缓存存放目录  */
-	private static final String CACHE_DIR = Environment.getExternalStorageDirectory().getPath()+"app package/cache/img/";
+	/** 文件默认缓存存放目录  */
+	private static String CACHE_DIR = Environment.getExternalStorageDirectory().getPath() + "aice/cache/img/";
 	
+	// init config params from aiceConfig.properties
+    static {
+        InputStream is = null;
+        try {
+            Properties p = new Properties();
+            is = ImageFileCache.class.getResourceAsStream("/assets/aiceConfig.properties");
+            p.load(is);
+
+            String cachedir = p.getProperty("ua.imagecache.cachdir");
+
+            if (!TextUtils.isEmpty(cachedir)) {
+                CACHE_DIR = Environment.getExternalStorageDirectory().getPath() + "/" + cachedir;
+            }
+            LogUtil.d(TAG, "CACHE_DIR = " + CACHE_DIR);
+
+        } catch (Exception e) {
+        	LogUtil.e(TAG, e.getMessage());
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                	LogUtil.e(TAG, e.getMessage());
+                }
+            }
+        }
+    }
+    
 	/** 文件缓存后缀名    */
 	private static final String CACHE_FILE_SUFFIX = ".cach";
 	
 	/** 允许最大缓存空间    30M */
-	private static final long MAX_CHCHE_SPACE = 30 * 1024 * 1024;
+	private static final long MAX_CACHE_SPACE = 30 * 1024 * 1024;
 	
 	/** 最小SD卡 剩余空间（预留给用户做其它的事情） */
-	private static final long MIN_SDCART_AVAILABLE_SPACE = 30 * 1024 * 1024;
+	private static final long MIN_SDCARD_AVAILABLE_SPACE = 30 * 1024 * 1024;
 	
 	/** 每次清除缓存的百分比 */
 	private static final float CACHE_REMOVE_FACTOR = 0.4f;
@@ -51,11 +83,11 @@ public class ImageFileCache implements ImageCache{
 	 * @return
 	 */
 	@Override
-	public Bitmap getImageData(ImageParams imageParams){
-		final String path = CACHE_DIR + convertUrlToFileName(imageParams.getImageKey());
+	public Bitmap getImageData(String url){
+		final String path = CACHE_DIR + convertUrlToFileName(url);
 		File file = new File(path);
 		if(file.exists()){
-			Bitmap bitmap = null;
+			/*Bitmap bitmap = null;
 			BitmapFactory.Options options = new BitmapFactory.Options();
 			options.inJustDecodeBounds = true;
 	        // 获取这个图片的宽和高
@@ -63,45 +95,41 @@ public class ImageFileCache implements ImageCache{
 	        int beWidth = (int) (options.outWidth/ (float) 200);
 	        int scale = beHeight>beWidth?beHeight:beWidth; 
 	        options.inSampleSize=scale==0?1:scale;
-	        options.inJustDecodeBounds = false;
-	        
-	        bitmap = BitmapFactory.decodeFile(path, options); 
+	        options.inJustDecodeBounds = false;	        
+	        bitmap = BitmapFactory.decodeFile(path, options); */
 			
+			Bitmap bitmap = BitmapFactory.decodeFile(path);
 	        if(bitmap == null){
 	        	Log.w(TAG, "将文件转换成Bitmap失败，删除此文件，path = " + path);
 	        	file.delete();
 	        }else {
-	        	Log.w(TAG, "将文件转换成Bitmap成功，path = " + path);
+	        	Log.d(TAG, "将文件转换成Bitmap成功，path = " + path);
 	        	// 修改 缓存文件的最后修改时间
 	        	updateFileTime(path);
 	        	return bitmap;
 			}
-		}
-		
+		}	
 		return null;
 	}
 	
 
-	
-
 	/**
 	 * 将图片数据保存到sd卡
-	 * @param imageParams
+	 * @param url
 	 * @param mBitmap
 	 * @throws IOException 
 	 */
 	@Override 
-	public void addBitmapToCache(ImageParams imageParams,Bitmap mBitmap) {
-		String imageKey = imageParams.getImageKey();
+	public void addBitmapToCache(String url, Bitmap mBitmap) {
 		if(mBitmap == null){
-			Log.w(TAG, "Bitmap为null，持久化存储失败，url = "+imageKey);
+			LogUtil.w(TAG, "Bitmap为null，持久化存储失败，url = "+url);
 			return ; 
 		}
 		
 		long sdcardAvailableSpace = SdcardUtil.getSdcardAvailableSpace();
 		// 如果sd卡的可用空间 小于 SD卡最小预留空间
-		if(sdcardAvailableSpace < MIN_SDCART_AVAILABLE_SPACE){
-			Log.w(TAG, "SD卡空间不足，不做持持久化存储，sdcardAvailableSpace = " + sdcardAvailableSpace + ", url = "+imageParams.getUrl());
+		if(sdcardAvailableSpace < MIN_SDCARD_AVAILABLE_SPACE){
+			LogUtil.w(TAG, "SD卡空间不足，不做持持久化存储，sdcardAvailableSpace = " + sdcardAvailableSpace + ", url = "+url);
 			return ;
 		}
 		
@@ -110,7 +138,7 @@ public class ImageFileCache implements ImageCache{
 			dir.mkdirs();     // PS: 这里客串一下, 注意 mkdirs() 与  mkdir()方法的区别
 		}
 		
-		String fileName = CACHE_DIR + convertUrlToFileName(imageKey);
+		String fileName = CACHE_DIR + convertUrlToFileName(url);
 		File file = new File(fileName);
 		
 		OutputStream os = null;
@@ -119,9 +147,9 @@ public class ImageFileCache implements ImageCache{
 			mBitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
 			os.flush();
 			os.close();
-			Log.d(TAG, "图片持久化存储成功，path = "+ fileName + ", url = " + imageKey);
+			LogUtil.d(TAG, "图片持久化存储成功，path = "+ fileName + ", url = " + url);
 		} catch (IOException e) {
-			Log.d(TAG, "图片持久化存储失败:"+e.getMessage());
+			LogUtil.d(TAG, "图片持久化存储失败:"+e.getMessage());
 		}
 		
 	}
@@ -136,14 +164,14 @@ public class ImageFileCache implements ImageCache{
 	 */
 	private boolean removeCache() {
 		if(!SdcardUtil.isSdcardWritable()){
-			Log.d(TAG, "SD卡不可写，清理缓存失败!");
+			LogUtil.d(TAG, "SD卡不可写，清理缓存失败!");
 			return false;
 		}
 		
 		File dir = new File(CACHE_DIR);
 		File[] files = dir.listFiles();
 		if(files == null || files.length == 0){
-			Log.d(TAG, "木有缓存，无需清理...");
+			LogUtil.d(TAG, "木有缓存，无需清理...");
 			return true;
 		}
 		
@@ -155,12 +183,12 @@ public class ImageFileCache implements ImageCache{
 		}
 		
 		long sdcardAvailableSpace = SdcardUtil.getSdcardAvailableSpace();
-		Log.d(TAG, "缓存文件的已有总大小为：" + dirSize + "，SD卡可用空间为：" + sdcardAvailableSpace);
+		LogUtil.d(TAG, "缓存文件的已有总大小为：" + dirSize + "，SD卡可用空间为：" + sdcardAvailableSpace);
 		
-		if(dirSize >= MAX_CHCHE_SPACE || sdcardAvailableSpace< MIN_SDCART_AVAILABLE_SPACE){
+		if(dirSize >= MAX_CACHE_SPACE || sdcardAvailableSpace< MIN_SDCARD_AVAILABLE_SPACE){
 			// 计算出需要删除的文件数量
 			int removeNum = (int)((files.length * CACHE_REMOVE_FACTOR) + 1);
-			Log.d(TAG, "需要清除"+removeNum+"个缓存文件");
+			LogUtil.d(TAG, "需要清除"+removeNum+"个缓存文件");
 			
 			// 根据文件的最后修改时间进行排序
 			Arrays.sort(files, new FileLastModifiedComparator());
@@ -171,7 +199,7 @@ public class ImageFileCache implements ImageCache{
 				}
 			}
 		}else{
-			Log.d(TAG, "缓存情况还木有超出指定情况，无需清理...");
+			LogUtil.d(TAG, "缓存情况还木有超出指定情况，无需清理...");
 		}
 		
 		return true;
@@ -207,7 +235,7 @@ public class ImageFileCache implements ImageCache{
 		/**
 		 * 将url进行MD5加密一下吧
 		 */
-		return MD5.getMD5Str(url)+CACHE_FILE_SUFFIX;
+		return MD5.getMD5Str(url) + CACHE_FILE_SUFFIX;
 	}
 	
 	/**

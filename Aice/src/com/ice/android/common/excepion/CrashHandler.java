@@ -22,13 +22,13 @@ import android.os.Process;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.ice.android.common.utils.LogUtil;
 import com.ice.android.common.utils.SdcardUtil;
 /**
  * 线程未捕获异常处理器，用来处理未捕获的异常
  * 当程序发生Uncaught异常的时候，由该类来处理程序并记录/发送错误报告
  * @author ice
  * 
- * 参考博客：http://blog.csdn.net/liuhe688/article/details/6584143
  */
 public class CrashHandler implements UncaughtExceptionHandler {
 
@@ -71,7 +71,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 	 */
 	@Override
 	public void uncaughtException(Thread thread, Throwable ex) {
-		Log.d(TAG, "应用发生未知错误");
+		LogUtil.d(TAG, "应用发生未知错误");
 		if(!handleException(ex) && mDefaultHandler != null){
 			// 如果用户自定义的mCrashHandler没有处理，则让系统默认的异常处理器来进行处理
 			mDefaultHandler.uncaughtException(thread, ex);
@@ -80,7 +80,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 			try {  
                 Thread.sleep(3000);  
             } catch (InterruptedException e) {  
-                Log.e(TAG, "error : ", e);  
+            	LogUtil.e(TAG, "error : " + e);  
             }
 			Process.killProcess(Process.myPid());
 			System.exit(1);

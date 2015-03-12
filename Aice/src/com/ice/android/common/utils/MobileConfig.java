@@ -102,7 +102,8 @@ public class MobileConfig {
 	
 	
 	/**
-	 * Get the number of phone,sometimes we can't get it because of sim operator's limit.
+	 * Get the number of phone,sometimes we can't get it because of sim operator's limit.<br/>
+	 * Requires Permission: READ_PHONE_STATE
 	 * @return
 	 */
 	public String getMobileNum() {

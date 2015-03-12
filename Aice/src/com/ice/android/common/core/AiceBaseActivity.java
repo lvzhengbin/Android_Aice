@@ -19,7 +19,7 @@ import com.ice.android.R;
  * @author ice
  *
  */
-public abstract class BaseActivity extends Activity {
+public abstract class AiceBaseActivity extends Activity {
 
 	private static final String TAG = "BaseActivity";
 	/** 标题栏  */
@@ -269,7 +269,7 @@ public abstract class BaseActivity extends Activity {
 
 		@Override
 		public void onClick(View arg0) {
-			BaseActivity.this.finish();
+			AiceBaseActivity.this.finish();
 		}
 	}
 	

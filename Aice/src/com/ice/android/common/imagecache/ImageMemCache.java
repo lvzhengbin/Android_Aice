@@ -6,7 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.graphics.Bitmap;
-import android.util.Log;
+
+import com.ice.android.common.utils.LogUtil;
 
 
 /**
@@ -43,7 +44,7 @@ public class ImageMemCache implements ImageCache{
 					 * 将Bitmap从 mHardBitmapCache内存中 转移到  mSoftBitmapCache内存中
 					 */
 					mSoftBitmapCache.put(eldest.getKey(), new SoftReference<Bitmap>(eldest.getValue()));
-					Log.d(TAG, "将数据从HardCache移到SoftCache，url="+eldest.getKey());
+					LogUtil.d(TAG, "将数据从HardCache移到SoftCache，url="+eldest.getKey());
 					return true;
 				}
 				return false;
@@ -54,51 +55,51 @@ public class ImageMemCache implements ImageCache{
 	
 	/**
 	 * 从缓存中获取图片数据
-	 * @param mImageParams
-	 * @return
+	 * @param url 图片url
+	 * @return 图片数据
 	 */
-	@Override 
-	public Bitmap getImageData(ImageParams mImageParams){
-		String imageKey = mImageParams.getImageKey();
-		// 先从 mHardBitmapCache 缓存中获取
+	@Override
+	public Bitmap getImageData(String url) {
+		// 先从mHardBitmapCache缓存中获取
 		synchronized (mHardBitmapCache) {
-			Bitmap bitmap = mHardBitmapCache.get(imageKey);
-			if(bitmap != null){
-				mHardBitmapCache.remove(imageKey);
-				mHardBitmapCache.put(imageKey, bitmap);
-				Log.d(TAG, "从HardCache中取到数据，url="+imageKey);
+			final Bitmap bitmap = mHardBitmapCache.get(url);
+			if (bitmap != null) {
+				// 如果找到的话，把元素移到linkedhashmap的最前面，从而保证在LRU算法中是最后被删除
+				mHardBitmapCache.remove(url);
+				mHardBitmapCache.put(url, bitmap);
+				LogUtil.d(TAG, "从HardCache中取到数据，url=", url);
 				return bitmap;
 			}
 		}
 		// 如果mHardBitmapCache中找不到，到mSoftBitmapCache中找
-		SoftReference<Bitmap> softReference = mSoftBitmapCache.get(imageKey);
-		if(softReference != null){
-			Bitmap bitmap = softReference.get();
-			if(bitmap != null){
-				// 将图片 移回硬缓存   从软缓存中移除
-				mHardBitmapCache.put(imageKey, bitmap);
-				mSoftBitmapCache.remove(imageKey);
-				Log.d(TAG, "从SoftCache中取到数据，url="+ imageKey);
+		SoftReference<Bitmap> bitmapReference = mSoftBitmapCache.get(url);
+		if (bitmapReference != null) {
+			final Bitmap bitmap = bitmapReference.get();
+			if (bitmap != null) {
+				// 将图片移回硬缓存
+				mHardBitmapCache.put(url, bitmap);
+				mSoftBitmapCache.remove(url);
+				LogUtil.d(TAG, "从SoftCache中取到数据，url=", url);
 				return bitmap;
-			}else{
-				mSoftBitmapCache.remove(imageKey);
+			} else {
+				mSoftBitmapCache.remove(url);
 			}
 		}
-		
 		return null;
 	}
-			
+
+
 	/**
 	 * 将图片添加到内存缓存		
-	 * @param imageParams
+	 * @param url 图片url
 	 * @param bitmap
 	 */
-	@Override 
-	public void addBitmapToCache(ImageParams imageParams,Bitmap bitmap){
-		if(bitmap != null){
+	@Override
+	public void addBitmapToCache(String url, Bitmap mBitmap) {
+		if (mBitmap != null) {
 			synchronized (mHardBitmapCache) {
-				mHardBitmapCache.put(imageParams.getImageKey(), bitmap);
-				Log.d(TAG, "将图片缓存到HardCache,url="+imageParams.getImageKey());
+				mHardBitmapCache.put(url, mBitmap);
+				LogUtil.d(TAG, "将图片缓存到HardCache，url=", url);
 			}
 		}
 	}
